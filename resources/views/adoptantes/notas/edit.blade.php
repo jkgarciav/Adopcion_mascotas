@@ -58,7 +58,7 @@
                     <h2 class="section-heading mb-5">
                         <span class="section-heading-upper">Diligenciar en este campo la valoracion realizada a el posible adoptante </span>
                     </h2>
-                    <form action="{{route('adoptantes.notas.update', $adoptante->id)}}" enctype="multipart/form-data"  method="POST" class="container col-sm-10">
+                    <form action="{{route('adoptantes.notas.update', ['adoptanteId' => $adoptante->id, 'mascotaId' => $adoptante->mascota_id])}}" enctype="multipart/form-data"  method="POST" class="container col-sm-10">
                         @method('PUT')
                         @csrf
                         <div class="form-group">

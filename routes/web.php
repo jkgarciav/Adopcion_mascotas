@@ -19,24 +19,26 @@ Route::get('/', 'MascotasController@index');
 
 Route::prefix('mascotas')->group(function () {
     Route::get ('/dashboard','MascotasController@dashboard')->name('mascotas.dashboard');
-    Route::get ('/{mascotaId}/showAdoptantes','MascotasController@showAdoptantes')->name('mascotas.showadoptante');
-    Route::get ('/{mascotaId}/historial','HistorialController@show')->name('mascotas.historial');
-    Route::get ('/{mascotaId}/regreso','MascotasController@volverDisponible')->name('mascotas.regreso');
-    Route::get ('/{mascotaId}/notas/edit', 'MascotasController@editarNotaMascota')->name('mascotas.notas.edit');
-    Route::put('/{mascotaId}/notas', 'MascotasController@updateNotaMascota')->name('mascotas.notas.update');
-    Route::get('/form/{mascotaId}','MascotasController@form');
-    Route::post('/form/{mascotaId}','MascotasController@formStore')->name('form.store');
+
+    Route::prefix('/{mascotaId}')->group(function() {
+        Route::get ('/historial','HistorialController@show')->name('mascotas.historial');
+        Route::get ('/regreso','MascotasController@volverDisponible')->name('mascotas.regreso');
+        Route::get ('/notas', 'MascotasController@editarNotaMascota')->name('mascotas.notas.edit');
+        Route::put('/notas', 'MascotasController@updateNotaMascota')->name('mascotas.notas.update');
+
+        // Adoptantes
+        Route::prefix('/adoptantes')->group(function() {
+            Route::get ('/','AdoptantesController@index')->name('adoptantes.index');
+            Route::post('/','AdoptantesController@store')->name('adoptantes.store');
+            Route::get('/create','AdoptantesController@create')->name('adoptantes.create');
+            Route::get ('/{adoptanteId}/notas','AdoptantesController@editNota')->name('adoptantes.notas.edit');
+            Route::put('/{adoptanteId}/notas','AdoptantesController@updateNota')->name('adoptantes.notas.update');
+            Route::post('/{adoptanteId}/adoptar', 'AdoptantesController@adoptar')->name('adoptantes.adoptar');
+        });
+    });    
 });
 
 Route::resource('mascotas','MascotasController');
-
-// Adoptantes
-
-Route::prefix('adoptantes')->group(function() {
-    Route::get ('/{adoptanteId}/editnotas','MascotasController@editnotas')->name('adoptantes.editnotas');
-    Route::put('/{adoptanteId}/notas','MascotasController@updateNotaAdoptante')->name('adoptantes.notas.update');
-    Route::post('/{adoptanteId}/adoptar', 'MascotasController@adoptar')->name('adoptantes.adoptar');
-});
 
 // Home
 

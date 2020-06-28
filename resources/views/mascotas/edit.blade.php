@@ -110,7 +110,7 @@
                             <textarea class="form-control"  name="descripcion" id="exampleFormControlTextarea1" rows="3">{{$mascota->descripcion}}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Descripcion</label>
+                            <label for="exampleFormControlTextarea1">Notas</label>
                             <textarea class="form-control"  name="notas" id="exampleFormControlTextarea1" rows="3">{{$mascota->notas}}</textarea>
                         </div>
                         <div class="form-group">

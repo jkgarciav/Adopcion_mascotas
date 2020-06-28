@@ -59,7 +59,7 @@
                     <h2 class="section-heading mb-5">
                         <span class="section-heading-upper text-center">!! Si estas interesado en la adopcion de esta mascota diligencia el formulario y nos comunicaremos contigo !!</span>
                     </h2>
-                    <form action="{{route('form.store', ['mascotaId' => $id])}}" enctype="multipart/form-data"  method="POST" class="container col-sm-10">
+                    <form action="{{route('adoptantes.store', ['mascotaId' => $id])}}" enctype="multipart/form-data"  method="POST" class="container col-sm-10">
 
                         @csrf
 

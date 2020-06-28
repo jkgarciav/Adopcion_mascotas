@@ -91,7 +91,7 @@
                                     <a class="btn btn-warning" href="{{route('mascotas.historial',['mascotaId' => $mascota->id])}}">Historial</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-warning" href="{{route('mascotas.showadoptante',['mascotaId' => $mascota->id])}}">Adoptantes</a>
+                                    <a class="btn btn-warning" href="{{route('adoptantes.index',['mascotaId' => $mascota->id])}}">Adoptantes</a>
                                 </td>
                                 <td>
                                     @if($mascota->estado == 'Disponible' )

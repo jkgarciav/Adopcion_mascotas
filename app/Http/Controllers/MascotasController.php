@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Adoptante;
 use App\Edad;
 use App\Especie;
-use App\HistorialMascota;
 use App\Mascota;
 use App\Sexo;
 use App\Tamaño;
+use App\Http\Controllers\HistorialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -68,7 +67,7 @@ class MascotasController extends Controller
 
         $mascota->save();
 
-        $this->historial($mascota->id,null,Mascota::DISPONIBLE);
+        HistorialController::crearHistorial($mascota->id, Mascota::DISPONIBLE);
 
         return redirect()->route('mascotas.dashboard');
     }
@@ -149,62 +148,6 @@ class MascotasController extends Controller
         return view('mascotas.dashboard',compact('mascotas'));
     }
 
-    public function form($id)
-    {
-        return view('mascotas.form', compact('id'));
-    }
-    public function formStore(Request $request,$id)
-    {
-        $adoptante= new Adoptante();
-        $adoptante->mascota_id = $id ;
-        $adoptante->nombre = $request->input('Nombres');
-        $adoptante->apellido = $request->input('Apellidos');
-        $adoptante->correo = $request->input('Correo');
-        $adoptante->telefono = $request->input('Telefono');
-        $adoptante->descripcion = $request->input('Descripcion');
-        $adoptante->save();
-
-        $mascota = Mascota::findOrFail($id);
-        $mascota->estado = Mascota::EN_PROCESO;
-        $mascota->save();
-
-        $this->historial($id,$adoptante->id, Mascota::EN_PROCESO);
-
-
-        return redirect()->route('mascotas.index');
-    }
-
-    public function showAdoptantes(Request $request, $mascota_id)
-    {
-        $adoptantes = Adoptante::whereMascotaId($mascota_id)->get();
-        return view('mascotas.adoptante', compact('adoptantes'));
-    }
-
-    public function editnotas(Request $request, $adoptante_id)
-    {
-        $adoptante = Adoptante::findOrFail($adoptante_id);
-        return view('mascotas.editnotas', compact('adoptante'));
-    }
-
-    public function updateNotaAdoptante(Request $request, $adoptante_id) {
-        $adoptante = Adoptante::findOrFail($adoptante_id);
-        $adoptante->notas = $request->input('notas');
-        $adoptante->save();
-
-        return redirect()->route('mascotas.showadoptante', $adoptante->mascota_id);
-    }
-
-    private function historial($id_mas, $id_adop, $est)
-    {
-        $historial = new HistorialMascota();
-
-        $historial->id_mascota = $id_mas;
-        $historial->id_adoptante = $id_adop;
-        $historial->estado = $est;
-
-        $historial->save();
-    }
-
     // Notas
     public function editarNotaMascota(Request $request, $mascota_id) {
         return view('mascotas.notasmascota', compact('mascota_id'));
@@ -216,18 +159,7 @@ class MascotasController extends Controller
         $mascota->estado = Mascota::DEVUELTO;
         $mascota->save();
 
-        $this->historial($mascota_id, null, Mascota::DEVUELTO);
-
-        return redirect()->route('mascotas.dashboard');
-    }
-
-    public function adoptar(Request $request, $adoptante_id) {
-        $adoptante = Adoptante::findOrFail($adoptante_id);
-        $mascota = Mascota::findOrFail($adoptante->mascota_id);
-        $mascota->estado = Mascota::ADOPTADO;
-        $mascota->save();
-
-        $this->historial($adoptante->mascota_id, $adoptante_id, Mascota::ADOPTADO);
+        HistorialController::crearHistorial($mascota_id, Mascota::DEVUELTO);
 
         return redirect()->route('mascotas.dashboard');
     }
@@ -238,9 +170,16 @@ class MascotasController extends Controller
         $mascota->estado = Mascota::DISPONIBLE;
         $mascota->save();
 
-        $this->historial($mascota_id, null, Mascota::DISPONIBLE);
+        HistorialController::crearHistorial($mascota_id, Mascota::DISPONIBLE);
 
         return redirect()->route('mascotas.dashboard');
 
+    }
+
+    public static function cambiarEstado($mascota_id, $estado) 
+    {
+        $mascota = Mascota::findOrFail($mascota_id);
+        $mascota->estado = $estado;
+        $mascota->save();
     }
 }

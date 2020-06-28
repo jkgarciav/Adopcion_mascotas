@@ -70,7 +70,7 @@
                             <li class="list-group-item"> Mi sexo es : {{$mascota->getSexo()}} </li>
                             <li class="list-group-item">Soy de tamaño : {{$mascota->getTamaño()}} </li>
                         </ul>
-                        <a href="{{ url('/mascotas/form', ['id' => $mascota->id]) }}" class="btn btn-primary">!!!ADOPTAME!!</a>
+                        <a href="{{ route('adoptantes.create', $mascota->id) }}" class="btn btn-primary">!!!ADOPTAME!!</a>
                     </div>
                 </div>
             </div>

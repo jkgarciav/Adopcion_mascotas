@@ -83,15 +83,17 @@
                                 <td>{{ $adoptante->descripcion}}</td>
                                 <td>{{ $adoptante->notas}}</td>
                                 <td>
-                                    <a class="btn btn-warning" href="{{route('adoptantes.editnotas',['adoptanteId' => $adoptante->id])}}">Editar nota</a>
+                                    <a class="btn btn-warning" href="{{route('adoptantes.notas.edit',['adoptanteId' => $adoptante->id, 'mascotaId' => $adoptante->mascota_id])}}">Editar nota</a>
                                 </td>
-                                <td>
-                                    <form action="{{route('adoptantes.adoptar', $adoptante->id)}}" enctype="multipart/form-data"  method="POST" class="container col-sm-10">
-                                        @method('POST')
-                                        @csrf
-                                        <button type="submit" class="btn btn-warning">Adoptar</button>
-                                    </form>
-                                </td>
+                                @if($estado != 'Adoptado' and $estado != 'Devuelto')
+                                    <td>
+                                        <form action="{{route('adoptantes.adoptar', ['adoptanteId' => $adoptante->id, 'mascotaId' => $adoptante->mascota_id])}}" enctype="multipart/form-data"  method="POST" class="container col-sm-10">
+                                            @method('POST')
+                                            @csrf
+                                            <button type="submit" class="btn btn-warning">Adoptar</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </table>
