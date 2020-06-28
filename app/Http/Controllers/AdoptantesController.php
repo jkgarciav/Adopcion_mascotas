@@ -4,7 +4,7 @@
 namespace App\Http\Controllers;
 
 
-class AdoptantesController
+class AdoptantesController extends Controller
 {
 
 }
